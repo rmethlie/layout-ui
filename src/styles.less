@@ -1,0 +1,384 @@
+BODY {
+  margin: 0;
+  padding: 0;
+}
+
+.application {
+  background-color: black;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 10px;
+
+  .toolbar {
+    display: inline-block;
+    height: 25px;
+    padding: 0 5px;
+    background-color: #232323;
+    vertical-align: middle;
+
+    .tool {
+      background-color: #777;
+      color: white;
+      font-weight: bold;
+      border: none;
+      box-shadow: -1px -1px 1px #ccc;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #ff7700;
+      }
+
+      &:focus {
+        outline: 0;
+      }
+
+      &.roster-add::after {
+        content: 'Add'
+      }
+
+      &.close-container::after {
+        content: 'Close'
+      }
+
+      &.roster-remove::after {
+        content: 'Remove'
+      }
+
+    }
+  }
+
+  .header {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 34px;
+    border-bottom: solid white 1px;
+    color: white;
+
+    .title {
+      display: inline-block;
+    }
+
+
+
+    .connection {
+      display: inline-block;
+      width: 16px;
+      height: 1em;
+      border-radius: 4px;
+      &.disonnecting {
+        background-color: orange;
+      }
+      &.disconnected {
+        background-color: red;
+      }
+      &.connecting {
+        background-color: yellow;
+      }
+      &.connected {
+        background-color: green;
+      }
+
+    }
+  }
+
+  .roster {
+    position: absolute;
+    top: 35px;
+    bottom: 35px;
+    /* needed for less so it doesnt interfere in math */
+    width: 275px;
+    left: 0;
+    border-left: solid white 1px;
+    border-bottom: solid #aaa 1px;
+    z-index: 999;
+    transition-duration: 0.5s;
+    transition-property: left;
+    background-color: #242424;
+
+    &.hide {
+      left: -240px;
+      .sidebar {
+        cursor: e-resize;
+      }
+    }
+
+    &.show {
+      left: 0;
+      .sidebar {
+        cursor: w-resize;
+      }
+    }
+
+    .sidebar {
+      width: 35px;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #343434;
+      z-index: 2;
+      border-left: solid #777 1px;
+      border-right: solid #aaa 1px;
+      text-align: center;
+
+      &:hover {
+        background-color: #575757;
+      }
+
+      .totals {
+        background-color: #737373;
+        height: 22px;
+        width: 100%;
+        border-bottom: solid white 1px;
+        vertical-align: middle;
+        padding-top: 3px;
+        display: inline-block;
+      }
+
+      .presence-counts {
+        position: relative;
+        top: 35px;
+      }
+
+
+    }
+
+    .toolbar {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 25px;
+      left: 0;
+      border-bottom: solid white 1px;
+    }
+
+    .items {
+      position: absolute;
+      /* make room for toolbar */
+      top: 28px;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding-top: 5px;
+
+      .item {
+        color: white;
+        vertical-align: top;
+        padding-top: 3px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+
+  .containers {
+    position: absolute;
+    top: 35px;
+    right: 0;
+    bottom: 35px;
+    left: 36px;
+
+    background-color: rgba(200,200,200,0.2);
+  }
+}
+
+
+.container {
+  border: solid white 1px;
+  padding: 5px;
+  margin: 5px;
+  background-color: #aaa;
+}
+
+.container.inbox {
+
+}
+
+.container .header {
+  color: white;
+  font-size: 12pt;
+}
+
+.display-name {
+  display: inline-block;
+  font-family: Courier New;
+  font-size: 10pt;
+
+  &.small {
+    padding-top: 4px;
+    font-size: 8pt;
+  }
+}
+
+
+.presence {
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  display: inline-block;
+  margin: 0 3px;
+  &.unavailable { background-color: gray }
+  &.available { background-color: green }
+  &.dnd { background-color: red }
+  &.away { background-color: orange }
+  &.unknown { background-color: gray }
+}
+
+@keyframes glow {
+  0% {
+    opacity: 1;
+  }
+
+  33% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opactiy: 0.25;
+  }
+}
+
+.presence-count {
+  display: inline-block;
+  width: 20px;
+  padding: 3px 0;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 9pt;
+  margin: 5px 0;
+  border: solid gray 1px;
+  color: white;
+  animation-duration: 0.5s;
+  animation-iteration-count: 1;
+  cursor: pointer;
+
+  &.unavailable {
+    border-color: gray;
+    background-color: rgba(100, 100, 100, 0.5);
+  }
+  &.available {
+    border-color: green;
+    background-color: rgba(0, 255, 0, 0.5);
+  }
+  &.dnd {
+    border-color: red;
+    background-color: rgba(255, 0, 0, 0.5);
+  }
+  &.away {
+    border-color: orange;
+    background-color: rgba(255, 150, 0, 0.5);
+  }
+  &.unknown {
+    border-color: #777;
+    background-color: rgba(50, 50, 50, 0.5);
+  }
+
+  &.inactive {
+    opacity: 0.25;
+  }
+}
+
+
+.wizard {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 999;
+
+  .steps-info {
+    color: white;
+    font-size: 12pt;
+  }
+
+  .steps {
+    // layout
+    position: absolute;
+    top: 25%;
+    right: 25%;
+    bottom: 25%;
+    left: 25%;
+    min-width: 300px;
+    min-height: 250px;
+    // appearance
+    background-color: rgba(40, 40, 40, 0.8);
+    border: solid #aaa 1px;
+    padding: 10%;
+
+    .step {
+      color: white;
+      padding: 10%;
+      background-color: rgba(100, 100, 100, 0.2);
+      position: relative;
+
+      button {
+        position: absolute;
+        bottom: 10%;
+      }
+
+      .prev {
+        left: 10%;
+      }
+
+      .next, .finished {
+        right: 10%;
+      }
+
+      .finished {
+
+      }
+    }
+  }
+}
+
+.delete-from-roster {
+  border-radius: 4px;
+  width: 0;
+  display: inline-block;
+  background-color: rgba(150, 0, 0, 0.5);
+  cursor: pointer;
+  color: white;
+  font-size: 8pt;
+  text-align: center;
+  overflow-x: hidden;
+  overflow-y: hidden;
+
+  &:hover {
+    background-color: rgba(200, 0, 0, 0.75);
+  }
+  &.show {
+    width: 34px;
+    opacity: 1;
+  }
+
+  &.checked {
+    background-color: rgba(255, 0, 0, 0.75);
+  }
+}
+
+.delete-from-roster-confirm, .delete-from-roster-cancel {
+  width: 45%;
+  border-radius: 4px;
+  display: inline-block;
+  cursor: pointer;
+  color: white;
+  font-size: 8pt;
+  text-align: center;
+}
+
+.delete-from-roster-confirm {
+  background-color: rgba(0, 200, 0, 0.5);
+}
+
+.delete-from-roster-cancel {
+  background-color: rgba(200, 0, 0, 0.5);
+}
