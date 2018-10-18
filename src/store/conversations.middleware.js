@@ -3,25 +3,57 @@ export function createRandomId(seed) {
   return `${seed}-${new Date().getTime()}`;
 }
 
-export function createConversation({id, jid, parent = createRandomId('conv')}, {next}) {
-  const slot = Object.assign({}, {id: jid});
-  // as these are all reducer calls, we can use next
+export function findOrCreateContainer(containers, parent, jid) {
+  // did we get a parent id?
+  if (parent && containers.byId[parent]) {
+    return containers.byId[parent];
+  }
+
+  const activeContainer = containers.byId[containers.active];
+  if (activeContainer) {
+    return activeContainer;
+  }
+
+  return null;
+}
+
+export function createConversation({jid, parent}, {next, getState}) {
+  const container = findOrCreateContainer(getState().containers, parent, jid);
+  const user = getState().roster.byId[jid];
+  const title = user ? user.name : jid;
+  const id = container ? container.id : createRandomId('container');
+  if (!container) {
+    // as these are all reducer calls, we can use next
+    next({
+      type: 'CONTAINERS.ADD',
+      data: {
+        id,
+        parent: 'conversations',
+        type: 'conversation',
+        title: 'Conversations'
+      }
+    });
+  }
   next({
-    type: 'CONTAINERS.ADD',
+    type: 'CONVERSATIONS.ADD',
     data: {
-      id: parent,
-      parent: 'conversations'
+      jid,
+      title
     }
   });
-  next({type: 'CONVERSATIONS.ADD', data: {jid}});
   next({
-    type: 'ADD_SLOT',
-    data: {parent, slot}
+    type: 'CONTAINERS.ADD_ITEM',
+    data: {
+      parent: id,
+      item: jid,
+      type: 'conversation',
+      title
+    }
   });
   next({
-    type: 'SET_ACTIVE',
-    data: {id: parent}
-  })
+    type: 'CONTAINERS.ACTIVATE',
+    data: {id}
+  });
 }
 
 export function createChatroom(data, store) {

@@ -5,18 +5,6 @@ import { API } from '../store/actions.js';
 
 class PresenceCount extends React.Component {
 
-  shouldComponentUpdate(nextProps) {
-    if (nextProps.count !== this.props.count) {
-      return true;
-    }
-
-    if (nextProps.filter !== this.props.filter) {
-      return true;
-    }
-
-    return false;
-  }
-
   render() {
     const { presence, count, filter, togglePresenceFilter } = this.props;
     const isFilterActive = !!filter;

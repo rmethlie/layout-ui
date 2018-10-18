@@ -184,17 +184,53 @@ BODY {
     right: 0;
     bottom: 35px;
     left: 36px;
+    background-color: inherit;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    flex-wrap: wrap;
 
-    background-color: rgba(200,200,200,0.2);
+    .container-wrapper {
+      flex-grow: 1;
+      min-width: 300px;
+    }
   }
 }
 
 
 .container {
-  border: solid white 1px;
   padding: 5px;
   margin: 5px;
-  background-color: #aaa;
+
+  &>.title {
+    color: white;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
+  .items {
+    padding: 5px;
+    margin: 5px;
+    .conversation {
+      cursor: pointer;
+      padding: 5px;
+      margin: 5px;
+
+      .title {
+        color: white;
+      }
+
+      &:hover {
+        background-color: rgba(150, 150, 150, 0.5);
+      }
+    }
+    .default {
+      background-color: blue;
+      .title {
+        color: red;
+      }
+    }
+  }
 }
 
 .container.inbox {
@@ -216,6 +252,8 @@ BODY {
     font-size: 8pt;
   }
 }
+
+
 
 
 .presence {

@@ -6,7 +6,7 @@ const defaultConversationsState = {
 
 const defaultConversationState = {
   jid: '',
-  active: false
+  title: 'Conversation'
 }
 
 function hydrateConversations(conversations) {

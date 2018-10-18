@@ -97,11 +97,16 @@ export default class Connection {
   }
 
   setCurrentUser(data) {
+    console.log('user data', data);
     this.user = Object.assign({}, this.user, data);
   }
 
   onConnected() {
     console.log('[Connection] onConnected');
+    this.store.dispatch({
+      type: 'CONNECTION.CURRENT_USER',
+      data: { jid: this.user.jid }
+    })
     this.store.dispatch({
       type: 'SET_AUTH_STATUS',
       data: 'AUTHENTICATED'

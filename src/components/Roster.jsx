@@ -20,10 +20,6 @@ class Roster extends React.Component {
     )
   }
 
-  shouldComponentUpdate(nextProps) {
-    return nextProps.show !== this.props.show;
-  }
-
   getTools() {
     return ['RosterAddTool', 'RosterRemoveTool'];
   }

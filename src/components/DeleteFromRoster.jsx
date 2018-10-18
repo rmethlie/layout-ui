@@ -11,18 +11,6 @@ class DeleteFromRoster extends React.Component {
     this.toggleCheckState = this.toggleCheckState.bind(this);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if (nextState.checkState !== this.state.checkState) {
-      return true;
-    }
-
-    if (nextProps.show !== this.props.show) {
-      return true;
-    }
-
-    return false;
-  }
-
   toggleCheckState() {
     this.setState({
       checkState: !this.state.checkState

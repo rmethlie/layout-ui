@@ -12,6 +12,8 @@ class RosterItems extends React.Component {
 
   constructor() {
     super();
+    this.onRosterItemClick = this.onRosterItemClick.bind(this);
+    this.mapJidToComponent = this.mapJidToComponent.bind(this);
     console.log('creating RosterItems');
   }
   render() {
@@ -19,29 +21,18 @@ class RosterItems extends React.Component {
     return (
       <div className="items">
         {filteredItems.map(this.mapJidToComponent)}
-      </div>
-    );
-  }
-
-  shouldComponentUpdate(nextProps) {
-    const { items, presence, filter, showRosterDelete } = nextProps;
-    if (items !== this.props.items) {
-      return true;
-    }
-
-    if (presence !== this.props.presence && !!filter) {
-      return true;
-    }
-
-    if (filter !== this.props.filter) {
-      return true;
-    }
-
-    return false;
+          </div>
+        );
   }
 
   mapJidToComponent(jid) {
-    return <RosterItem key={generateKey()} jid={jid} />;
+    return <RosterItem key={generateKey()} jid={jid} onClick={this.onRosterItemClick} />;
+  }
+
+  onRosterItemClick(event) {
+    const jid = event.target.getAttribute('data-jid');
+    console.log('starting conversation from click:', jid);
+    this.props.startConversationFromClick(jid);
   }
 
   getFilterFunction(filterType) {
@@ -86,4 +77,18 @@ function mapStateToProps(state, props) {
   }
 }
 
-export default connect(mapStateToProps)(RosterItems);
+function mapDispatchToProps(dispatch) {
+  return {
+    startConversationFromClick: (jid) => {
+      dispatch({
+        type: 'API.CONVERSATIONS.OPEN',
+        data: {
+          type: 'CHAT',
+          jid
+        }
+      })
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RosterItems);

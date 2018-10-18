@@ -3,23 +3,22 @@ import { connect } from 'react-redux';
 // components
 import Container from './Container.jsx';
 
-const mapContainersToComponents = containers =>
-  Object.keys(containers)
+const mapChildrenToComponents = children =>
+  Object.keys(children)
     .map(id =>
       <Container
         key={id}
         id={id}
-        type={containers[id].type}
       ></Container>
     );
 
 class Containers extends React.Component {
 
   render() {
-    const { containers } = this.props;
+    const { children } = this.props;
     return (
       <div className="containers">
-        {mapContainersToComponents(containers)}
+        {mapChildrenToComponents(children)}
       </div>
     )
   }
@@ -27,7 +26,7 @@ class Containers extends React.Component {
 
 function mapStateToProps(state, props) {
   return {
-    containers: state.containers.byId
+    children: state.containers.byId
   };
 }
 

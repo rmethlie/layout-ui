@@ -17,24 +17,18 @@ class RosterItem extends React.Component {
       jid,
       name,
       email,
-      company
+      company,
+      onClick
     } = this.props;
 
     const deleteAction = API.Roster.remove(jid);
     return (
-      <div className="item" data-jid={jid}>
+      <div className="item" data-jid={jid} onClick={onClick}>
         <DeleteFromRoster deleteAction={deleteAction} />
         <Presence jid={jid} />
         <DisplayName jid={jid} />
       </div>
     );
-  }
-
-  shouldComponentUpdate(nextProps) {
-    if (nextProps.name !== this.props.name) {
-      return true;
-    }
-    return false;
   }
 }
 
